@@ -14,6 +14,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import "chartjs-adapter-moment";
+import useGenerateRandomColor from '../hooks/useGenerateRandomColor'
 
 ChartJS.register(
   CategoryScale,
@@ -36,10 +37,9 @@ export default function Graph({ graphData, filter }) {
   const [labels, setLabels] = React.useState([]);
   const [options, setOptions] = React.useState([]);
   const [data, setData] = React.useState([]);
-
   const setGraphData = async () => {
     const { borough, year, incident } = filter;
-
+    const filtertedGraphData = graphData.filter(data=>data.yearmonth.includes('FY'));
     const newOptions = {
       responsive: true,
       scales: {
@@ -62,8 +62,8 @@ export default function Graph({ graphData, filter }) {
           callbacks: {
             labelColor: function (context) {
               return {
-                borderColor: "rgb(0, 0, 255)",
-                backgroundColor: "rgb(255, 0, 0)",
+                borderColor: "rgba(17, 88, 86, 1.0)",
+                backgroundColor: "rgba(17, 88, 86, 1.0)",
                 borderWidth: 2,
                 borderDash: [2, 2],
                 borderRadius: 2,
@@ -100,11 +100,12 @@ export default function Graph({ graphData, filter }) {
       },
     };
     setOptions(newOptions);
+    console.log('new data');
+    console.log(filtertedGraphData);
     let labels =
       borough != "All Boroughs"
-        ? year !== null ? graphData.map((data) => data.incidentclassification) : graphData.map((data) => data.yearMonth)
-        : year !== null ? graphData.map((data) => data.incidentborough) : graphData.map((data) => data.yearMonth); 
-
+        ? year !== null ? filtertedGraphData.map((data) => data.incidentclassification) : filtertedGraphData.map((data) => data.yearmonth)
+        : year !== null ? filtertedGraphData.map((data) => data.incidentborough) : filtertedGraphData.map((data) => data.yearmonth); 
     const newData = {
       labels,
       datasets: [

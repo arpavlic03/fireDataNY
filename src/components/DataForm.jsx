@@ -89,6 +89,13 @@ export default function DataForm({setFilter}) {
             type="submit"
             size="large"
             variant="contained"
+            sx={{
+                backgroundColor: '#F68A5C',
+                  '&:hover': {
+                    backgroundColor: 'pink',
+                    color: 'black'
+                  },
+              } }
           >
             Submit
           </Button>

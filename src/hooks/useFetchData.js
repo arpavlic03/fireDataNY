@@ -20,8 +20,10 @@ const useFetchData = (filter = "") => {
   }, [filter]);
 
   async function fetchData() {
+    setData({});
     setLoading(true);
     setError(false);
+    
     await axios
       .get(url+filter, config)
       .then((response) => {

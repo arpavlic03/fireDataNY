@@ -9,6 +9,8 @@ import outputFilterString from "../utilities/apiUtilities";
 export default function CenterBox() {
   const [filter, setFilter] = React.useState(null);
   const [previousFilter, setPreviousFilter] = React.useState(null);
+  const [newGraphData, setNewGraphData] = React.useState({});
+
   const {
     data: graphData,
     loading: graphLoading,
@@ -18,17 +20,23 @@ export default function CenterBox() {
 
   React.useEffect(() => {
     if (filter !== null) {
-      let filterString = outputFilterString(
-        filter.borough,
-        filter.incident,
-        filter.year
-      );
-      if (filterString !== previousFilter) {
-        setPreviousFilter(filterString);
-        graphFetch();
-      }
+        let filterString = outputFilterString(
+            filter.borough,
+            filter.incident,
+            filter.year
+          );
+          if (filterString !== previousFilter) {
+            setPreviousFilter(filterString);
+            graphFetch();
+          }
     }
   }, [filter]);
+
+  React.useEffect(() => {
+    if (!isEmpty(graphData) && !graphLoading) {
+        setNewGraphData(graphData)
+    }
+  }, [graphData, graphLoading]);
 
 
   return (
@@ -38,13 +46,13 @@ export default function CenterBox() {
           width: "90vw",
           height: "90vh",
           borderRadius: "40px",
-          backgroundColor: "white",
+          backgroundColor: "#f2EAD8",
           marginTop: "2%",
           boxShadow: "3px 2px 2px darkgrey",
         }}
       >
         <DataForm setFilter={setFilter} />
-        <Graph filter={filter} graphData={graphData} />
+        <Graph filter={filter} graphData={newGraphData} />
       </Box>
     </>
   );
